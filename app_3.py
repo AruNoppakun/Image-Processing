@@ -33,14 +33,14 @@ elif option == 'อัปโหลดไฟล์':
 
 # ตรวจจับและแสดงผล
 if image:
-    st.image(image, caption="ภาพต้นฉบับ",use_column_width =True)
+    st.image(image, caption="ภาพต้นฉบับ",use_container_width  =True)
     st.write("🔍 กำลังตรวจจับวัตถุ...")
 
     results = model(image)
 
     # วาดภาพที่มี bounding boxes
     annotated_image = results[0].plot()
-    st.image(annotated_image, caption="ผลการตรวจจับ",use_column_width =True)
+    st.image(annotated_image, caption="ผลการตรวจจับ",use_container_width  =True)
 
     # แสดงรายการวัตถุ
     st.subheader("วัตถุที่ตรวจพบ:")
