@@ -8,8 +8,8 @@ st.title("คลิกเลือกรูปภาพเพื่อดูข�
 # URLs ของภาพทั้ง 3
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/3/32/French_Bulldog_with_Black_Mask.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/6/6e/EnglishBulldog.jpg"
+    "https://images.dmc.tv/wallpaper/raw/3245.jpg",
+    "https://images.pexels.com/photos/50577/hedgehog-animal-baby-cute-50577.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
 ]
 
 # Slider ให้เลือกขนาดรูปย่อ (thumbnail)
