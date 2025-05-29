@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image
 import requests
 from io import BytesIO
+import matplotlib.pyplot as plt
+import numpy as np
 
 # รายชื่อภาพพร้อม URL
 image_dict = {
@@ -36,7 +38,7 @@ if st.session_state.selected_image is not None:
     response = requests.get(url)
     img_full = Image.open(BytesIO(response.content))
 
-    # slider ปรับความกว้างภาพเต็ม (px)
+    # เพิ่ม slider ให้ปรับความกว้างภาพเต็ม (px)
     width = st.slider("ปรับความกว้างภาพเต็ม (pixel)", min_value=100, max_value=1200, value=600)
 
     # ปรับขนาดภาพให้กว้างตาม slider รักษาอัตราส่วน
@@ -46,4 +48,27 @@ if st.session_state.selected_image is not None:
 
     st.markdown("---")
     st.image(img_full_resized, caption=f"ภาพเต็ม: {caption}", use_container_width=False)
-    st.write(f"ขนาดภาพ: กว้าง {width}px x สูง {new_height}px")
+
+    # แปลงภาพเป็น grayscale สำหรับ plot intensity
+    img_gray = img_full_resized.convert("L")
+    img_array = np.array(img_gray)
+
+    # คำนวณค่าเฉลี่ยแสงในแกน X (แนวนอน) และแกน Y (แนวตั้ง)
+    intensity_x = img_array.mean(axis=0)  # ค่าเฉลี่ยแต่ละคอลัมน์
+    intensity_y = img_array.mean(axis=1)  # ค่าเฉลี่ยแต่ละแถว
+
+    # สร้างกราฟ
+    fig, ax = plt.subplots(2, 1, figsize=(8,4))
+
+    ax[0].plot(intensity_x)
+    ax[0].set_title("Intensity ตามแกน X (แนวนอน)")
+    ax[0].set_xlabel("ตำแหน่งแกน X (พิกเซล)")
+    ax[0].set_ylabel("ค่าเฉลี่ยความเข้ม")
+
+    ax[1].plot(intensity_y)
+    ax[1].set_title("Intensity ตามแกน Y (แนวตั้ง)")
+    ax[1].set_xlabel("ตำแหน่งแกน Y (พิกเซล)")
+    ax[1].set_ylabel("ค่าเฉลี่ยความเข้ม")
+
+    plt.tight_layout()
+    st.pyplot(fig)
