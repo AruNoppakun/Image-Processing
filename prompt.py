@@ -40,10 +40,10 @@ for idx, col in enumerate(cols):
         # แสดงภาพพร้อมปุ่มคลิกเลือก
         if col.button(f"เลือกรูปที่ {idx + 1}"):
             st.session_state.selected_index = idx
-        col.image(thumb, use_column_width=True)
+        col.image(thumb, use_container_width=True) 
 
 # ถ้ามีการเลือกภาพ ให้แสดงภาพขนาดเต็มด้านล่าง
 if st.session_state.selected_index is not None:
     st.markdown("---")
     st.subheader(f"ภาพขนาดเต็ม - รูปที่ {st.session_state.selected_index + 1}")
-    st.image(images[st.session_state.selected_index], use_column_width=True)
+    st.image(images[st.session_state.selected_index], use_container_width=True)
