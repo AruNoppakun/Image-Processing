@@ -11,7 +11,7 @@ st.title("แสดงภาพพร้อมแกน X, Y ด้วย matplo
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
     "https://images.dmc.tv/wallpaper/raw/7480.jpg",
-    "https://waymagazine.org/wp-content/uploads/2019/05/dog.jpg"
+    "https://blog.cheewid.com/wp-content/uploads/2023/08/Cheewit-Aug3-4.jpg"
 ]
 
 # โหลดภาพเต็มไว้ก่อน
