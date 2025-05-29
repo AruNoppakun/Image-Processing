@@ -4,11 +4,7 @@ matplotlib
 pillow
 requests
 plotly
-streamlit
-pillow
 torch 
 torchvision 
 torchaudio
-ultralytics 
-streamlit 
-pillow
+ultralytics
