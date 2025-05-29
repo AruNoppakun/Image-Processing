@@ -4,8 +4,8 @@ matplotlib
 pillow
 requests
 plotly
-torch 
-torchvision 
+torch
+torchvision
 torchaudio
 ultralytics
 opencv-python-headless
