@@ -15,19 +15,25 @@ st.title("แสดงภาพสัตว์สามชนิด")
 cols = st.columns(3)
 target_size = (300, 300)
 
-# แสดงภาพย่อในคอลัมน์
-for col, (caption, url) in zip(cols, image_dict.items()):
+# ตัวแปรเก็บภาพที่เลือก (ใช้ session_state)
+if "selected_image" not in st.session_state:
+    st.session_state.selected_image = None
+
+# แสดงภาพย่อพร้อมปุ่ม
+for i, (caption, url) in enumerate(image_dict.items()):
+    with cols[i]:
+        response = requests.get(url)
+        img = Image.open(BytesIO(response.content))
+        img = img.resize(target_size)
+        st.image(img, caption=caption, use_container_width=True)
+
+        if st.button("เลือกรูปภาพ", key=f"select_{i}"):
+            st.session_state.selected_image = (caption, url)
+
+# ถ้ามีภาพที่เลือก ให้แสดงภาพเต็มขนาดด้านล่าง
+if st.session_state.selected_image is not None:
+    caption, url = st.session_state.selected_image
     response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    img = img.resize(target_size)
-    col.image(img, caption=caption, use_container_width=True)
-
-# ตัวเลือกให้ผู้ใช้เลือกภาพเพื่อดูเต็มจอ
-selected_caption = st.selectbox("เลือกภาพเพื่อขยายเต็มจอ", list(image_dict.keys()))
-
-# โหลดและแสดงภาพขนาดเต็มตามที่เลือก
-selected_url = image_dict[selected_caption]
-response = requests.get(selected_url)
-img_full = Image.open(BytesIO(response.content))
-
-st.image(img_full, caption=f"ภาพเต็ม: {selected_caption}", use_container_width=True)
+    img_full = Image.open(BytesIO(response.content))
+    st.markdown("---")
+    st.image(img_full, caption=f"ภาพเต็ม: {caption}", use_container_width=True)
