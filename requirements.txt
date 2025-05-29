@@ -5,4 +5,4 @@ pillow
 requests
 plotly
 streamlit
-YOLOv5
+easyocr @ git+https://github.com/ultralytics/yolov5.git
