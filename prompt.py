@@ -12,27 +12,33 @@ image_urls = [
 
 st.title("คลิกเลือกรูปภาพเพื่อดูขนาดเต็ม")
 
-# โหลดภาพทั้งหมดจาก URL
+# ขนาดที่ต้องการให้ภาพแสดง (width x height)
+display_size = (300, 200)
+
+# โหลดและปรับขนาดภาพ
 images = []
 for url in image_urls:
     response = requests.get(url)
     if response.status_code == 200:
-        img = Image.open(BytesIO(response.content))
-        images.append(img)
+        img = Image.open(BytesIO(response.content)).convert("RGB")
+        resized_img = img.resize(display_size)
+        images.append((resized_img, img))  # เก็บทั้งรูป resized และ original
     else:
-        images.append(None)
+        images.append((None, None))
 
-# แสดงภาพเป็นแถวแนวนอน
+# แสดงภาพแนวนอนด้วยปุ่มเลือก
 cols = st.columns(3)
 selected_index = None
 
 for i, col in enumerate(cols):
-    if images[i] is not None:
+    resized_img, _ = images[i]
+    if resized_img is not None:
         if col.button(f"เลือกภาพที่ {i+1}"):
             selected_index = i
-        col.image(images[i], use_column_width=True)
+        col.image(resized_img)
 
-# แสดงภาพขนาดเต็มเมื่อเลือก
+# แสดงภาพต้นฉบับขนาดเต็ม
 if selected_index is not None:
+    _, full_img = images[selected_index]
     st.subheader(f"ภาพที่ {selected_index + 1} (ขนาดเต็ม)")
-    st.image(images[selected_index], use_column_width=True)
+    st.image(full_img, use_column_width=True)
