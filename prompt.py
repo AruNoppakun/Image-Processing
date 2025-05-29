@@ -12,7 +12,11 @@ image_urls = {
 
 st.title("แสดงภาพสัตว์สามชนิด")
 
-for caption, url in image_urls.items():
+# สร้าง 3 คอลัมน์เท่า ๆ กัน
+cols = st.columns(3)
+
+for col, (caption, url) in zip(cols, image_urls.items()):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
-    st.image(img, caption=caption)
+    # ใส่ภาพลงในคอลัมน์ พร้อม caption
+    col.image(img, caption=caption, use_column_width=True)
