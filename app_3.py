@@ -1,52 +1,51 @@
 import streamlit as st
 from PIL import Image
 import requests
-import torch
 import io
+from ultralytics import YOLO
+from collections import Counter
 
-# โหลด YOLOv5 model
+st.title("🧠 ตรวจจับวัตถุในภาพด้วย YOLOv8")
+
+# โหลดโมเดล YOLOv8 nano (เล็กและเร็ว)
 @st.cache_resource
 def load_model():
-    model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-    return model
+    return YOLO("yolov8n.pt")  # ใช้ yolov8n.pt ที่เบาและโหลดเร็ว
 
 model = load_model()
 
-st.title("🔍 ตรวจจับวัตถุในภาพ (Object Detection)")
-st.write("อัปโหลดภาพหรือใส่ URL ของภาพเพื่อดูวัตถุที่ตรวจพบ")
-
 # ตัวเลือกการป้อนภาพ
-option = st.radio("เลือกรูปแบบการนำเข้าภาพ:", ('URL', 'อัปโหลดไฟล์'))
+option = st.radio("เลือกรูปแบบการป้อนภาพ", ['URL', 'อัปโหลดไฟล์'])
 
 image = None
-
 if option == 'URL':
-    url = st.text_input("ใส่ URL ของภาพ:")
+    url = st.text_input("ใส่ URL ของภาพ")
     if url:
         try:
             response = requests.get(url)
-            image = Image.open(io.BytesIO(response.content))
+            image = Image.open(io.BytesIO(response.content)).convert("RGB")
         except:
-            st.error("ไม่สามารถโหลดภาพจาก URL ได้ กรุณาตรวจสอบลิงก์")
+            st.error("ไม่สามารถโหลดภาพจาก URL นี้ได้")
 elif option == 'อัปโหลดไฟล์':
-    uploaded_file = st.file_uploader("อัปโหลดไฟล์ภาพ", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("เลือกรูปภาพ", type=["jpg", "jpeg", "png"])
     if uploaded_file:
-        image = Image.open(uploaded_file)
+        image = Image.open(uploaded_file).convert("RGB")
 
-# ตรวจจับวัตถุในภาพ
+# ตรวจจับและแสดงผล
 if image:
-    st.image(image, caption='ภาพที่เลือก', use_column_width=True)
-    st.write("กำลังประมวลผล...")
+    st.image(image, caption="ภาพต้นฉบับ", use_column_width=True)
+    st.write("🔍 กำลังตรวจจับวัตถุ...")
 
     results = model(image)
 
-    # แสดงภาพที่มีการตรวจจับวัตถุ
-    results.render()  # แก้ไขใน place
+    # วาดภาพที่มี bounding boxes
+    annotated_image = results[0].plot()
+    st.image(annotated_image, caption="ผลการตรวจจับ", use_column_width=True)
 
-    st.image(results.ims[0], caption="ผลลัพธ์การตรวจจับ", use_column_width=True)
-
-    # แสดงรายการวัตถุที่พบ
-    labels = results.pandas().xyxy[0]['name'].value_counts()
-    st.subheader("วัตถุที่พบในภาพ:")
-    for label, count in labels.items():
-        st.write(f"- {label} ({count} ชิ้น)")
+    # แสดงรายการวัตถุ
+    st.subheader("วัตถุที่ตรวจพบ:")
+    names = results[0].names
+    classes = results[0].boxes.cls.cpu().numpy()
+    counts = Counter([names[int(c)] for c in classes])
+    for name, count in counts.items():
+        st.write(f"- {name}: {count} ชิ้น")
