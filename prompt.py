@@ -14,7 +14,10 @@ st.title("แสดงภาพสัตว์สามชนิด")
 
 cols = st.columns(3)
 
+target_size = (300, 300)  # กำหนดขนาดภาพเป็น 300x300 px
+
 for col, url in zip(cols, image_urls):
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
+    img = img.resize(target_size)  # ปรับขนาดภาพ
     col.image(img, use_container_width=True)
