@@ -3,39 +3,36 @@ import requests
 from PIL import Image
 from io import BytesIO
 
-# รายการ URL รูปภาพ
+# URLs ของภาพทั้ง 3
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/e/e5/Labrador_Retriever_portrait.jpg"
+    "https://upload.wikimedia.org/wikipedia/commons/3/32/French_Bulldog_with_Black_Mask.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/6/6e/EnglishBulldog.jpg"
 ]
 
-# หัวข้อ
-st.title("แกลเลอรีรูปภาพสุนัข")
+st.title("คลิกเลือกรูปภาพเพื่อดูขนาดเต็ม")
 
-# แสดงภาพแบบ thumbnail
-st.subheader("เลือกรูปภาพที่ต้องการดูแบบขยาย")
-cols = st.columns(len(image_urls))
+# โหลดภาพทั้งหมดจาก URL
 images = []
-
-for i, url in enumerate(image_urls):
+for url in image_urls:
     response = requests.get(url)
     if response.status_code == 200:
         img = Image.open(BytesIO(response.content))
         images.append(img)
-        with cols[i]:
-            st.image(img, caption=f"รูปที่ {i+1}", use_column_width=True)
     else:
         images.append(None)
-        with cols[i]:
-            st.error("โหลดรูปไม่สำเร็จ")
 
-# ตัวเลือกสำหรับเลือกภาพ
-selected_index = st.selectbox("เลือกรูปภาพเพื่อดูแบบขยาย", options=range(len(images)), format_func=lambda i: f"รูปที่ {i+1}")
+# แสดงภาพเป็นแถวแนวนอน
+cols = st.columns(3)
+selected_index = None
 
-# แสดงภาพเต็ม
-if images[selected_index]:
-    st.subheader(f"รูปที่ {selected_index + 1} แบบขยาย")
+for i, col in enumerate(cols):
+    if images[i] is not None:
+        if col.button(f"เลือกภาพที่ {i+1}"):
+            selected_index = i
+        col.image(images[i], use_column_width=True)
+
+# แสดงภาพขนาดเต็มเมื่อเลือก
+if selected_index is not None:
+    st.subheader(f"ภาพที่ {selected_index + 1} (ขนาดเต็ม)")
     st.image(images[selected_index], use_column_width=True)
-else:
-    st.error("ไม่สามารถแสดงภาพที่เลือกได้")
