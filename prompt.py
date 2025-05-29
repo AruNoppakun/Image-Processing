@@ -2,6 +2,7 @@ import streamlit as st
 from PIL import Image
 import requests
 from io import BytesIO
+import matplotlib.pyplot as plt
 
 # รายชื่อภาพพร้อม URL
 image_dict = {
@@ -45,7 +46,13 @@ if st.session_state.selected_image is not None:
     img_full_resized = img_full.resize((width, new_height))
 
     st.markdown("---")
-    st.image(img_full_resized, caption=f"ภาพเต็ม: {caption}", use_container_width=False)
+    st.write(f"ขนาดภาพ (Width x Height): {img_full_resized.width} px x {img_full_resized.height} px")
 
-    # แสดงขนาดภาพ (แกน X = ความกว้าง, แกน Y = ความสูง)
-    st.write(f"ขนาดภาพที่แสดง: กว้าง {img_full_resized.width} px, สูง {img_full_resized.height} px")
+    # แสดงภาพด้วย matplotlib พร้อมแกน X, Y
+    fig, ax_orig = plt.subplots()
+    ax_orig.imshow(img_full_resized)
+    ax_orig.set_xlabel("X (Column)")
+    ax_orig.set_ylabel("Y (Row)")
+    ax_orig.set_title(f"ภาพเต็ม: {caption}")
+
+    st.pyplot(fig)
