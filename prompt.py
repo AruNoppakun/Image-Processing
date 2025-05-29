@@ -36,7 +36,7 @@ if st.session_state.selected_image is not None:
     response = requests.get(url)
     img_full = Image.open(BytesIO(response.content))
 
-    # เพิ่ม slider ให้ปรับความกว้างภาพเต็ม (px)
+    # slider ปรับความกว้างภาพเต็ม (px)
     width = st.slider("ปรับความกว้างภาพเต็ม (pixel)", min_value=100, max_value=1200, value=600)
 
     # ปรับขนาดภาพให้กว้างตาม slider รักษาอัตราส่วน
@@ -46,3 +46,4 @@ if st.session_state.selected_image is not None:
 
     st.markdown("---")
     st.image(img_full_resized, caption=f"ภาพเต็ม: {caption}", use_container_width=False)
+    st.write(f"ขนาดภาพ: กว้าง {width}px x สูง {new_height}px")
