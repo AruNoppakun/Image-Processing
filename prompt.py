@@ -3,20 +3,24 @@ from PIL import Image
 import requests
 from io import BytesIO
 
-# รายการ URL ภาพ
+# URLs ของภาพ 3 รูป
 image_urls = {
     "Bulldog Inglese": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "Golden Retriever": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Golden_Retriever_medium-to-light_coat.jpg",
-    "Siberian Husky": "https://upload.wikimedia.org/wikipedia/commons/1/12/Siberian_Husky_pho.jpg"
+    "Golden Retriever": "https://upload.wikimedia.org/wikipedia/commons/8/86/Golden_Retriever_Carlos_(10581910556).jpg",
+    "Siberian Husky": "https://upload.wikimedia.org/wikipedia/commons/6/65/Siberian_Husky_female.jpg"
 }
 
-# สร้าง selectbox ให้เลือกภาพ
-selected_image_name = st.selectbox("เลือกภาพที่ต้องการดู", list(image_urls.keys()))
+# โหลดภาพจาก URL
+def load_image(url):
+    response = requests.get(url)
+    return Image.open(BytesIO(response.content))
 
-# โหลดภาพที่เลือก
-url = image_urls[selected_image_name]
-response = requests.get(url)
-img = Image.open(BytesIO(response.content))
+# สร้างลิสต์ชื่อภาพสำหรับ selectbox
+image_names = list(image_urls.keys())
 
-# แสดงภาพแบบเต็มพื้นที่กว้าง
-st.image(img, caption=selected_image_name, use_column_width=True)
+# เลือกรูปภาพ
+selected_name = st.selectbox("เลือกภาพเพื่อขยายเต็มจอ", image_names)
+
+# โหลดและแสดงภาพที่เลือก
+img = load_image(image_urls[selected_name])
+st.image(img, caption=selected_name, use_column_width=True)
