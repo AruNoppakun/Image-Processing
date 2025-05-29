@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 # รายชื่อภาพพร้อม URL
 image_dict = {
-    "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "https://images.pexels.com/photos/50577/hedgehog-animal-baby-cute-50577.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    "https://cdn.pixabay.com/photo/2023/11/09/19/36/zoo-8378189_1280.jpg"
+    "Bulldog (หมา)": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
+    "Cat (แมว)": "https://images.pexels.com/photos/50577/hedgehog-animal-baby-cute-50577.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    "Monkey (ลิง)": "https://cdn.pixabay.com/photo/2023/11/09/19/36/zoo-8378189_1280.jpg"
 }
 
 st.title("แสดงภาพสัตว์สามชนิด")
