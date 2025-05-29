@@ -5,4 +5,8 @@ pillow
 requests
 plotly
 streamlit
-easyocr @ git+https://github.com/ultralytics/yolov5.git
+pillow
+torch 
+torchvision 
+torchaudio
+yolov5 @ git+https://github.com/ultralytics/yolov5.git
