@@ -3,14 +3,14 @@ import requests
 from PIL import Image
 from io import BytesIO
 
-st.title("เลือกภาพเพื่อขยาย")
-
 # URLs ของภาพทั้ง 3
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
     "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQUEQYeiKkhn687htVNpGATyROPyOpuBIyrRpJrWMXaa1p-w5dFOT-z_znAjv0Tw8LC9nopCkxT-mGLoJZJt1RISSSlXVE5_mzjQAt2QzIC5Q",
     "https://s.isanook.com/ca/0/ud/276/1380909/12794445_1218908274799864_3867112738991391881_n.jpg"
 ]
+
+st.title("เลือกภาพเพื่อขยาย")
 
 # ฟังก์ชันดาวน์โหลดและเปิดภาพ
 def load_image(url):
