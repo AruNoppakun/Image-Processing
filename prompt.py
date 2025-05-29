@@ -5,9 +5,9 @@ from io import BytesIO
 
 # URLs ของภาพทั้ง 3
 image_urls = {
-    "Bulldog (หมา)": "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "Cat (แมว)": "https://f.ptcdn.info/002/048/000/oidav7m4nF0JGvXz44Y-o.jpg",
-    "Monkey (ลิง)": "https://www.khaoyainationalpark.com/application/files/6116/3273/3973/33.jpg"
+    "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
+    "https://f.ptcdn.info/002/048/000/oidav7m4nF0JGvXz44Y-o.jpg",
+    "https://cdn.pixabay.com/photo/2023/11/09/19/36/zoo-8378189_1280.jpg"
 }
 
 st.title("แสดงภาพสัตว์สามชนิด")
