@@ -3,29 +3,32 @@ import requests
 from PIL import Image
 from io import BytesIO
 
+st.title("คลิกเลือกรูปภาพเพื่อดูขนาดเต็ม และปรับขนาดรูปย่อได้")
+
 # URLs ของภาพทั้ง 3
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQUEQYeiKkhn687htVNpGATyROPyOpuBIyrRpJrWMXaa1p-w5dFOT-z_znAjv0Tw8LC9nopCkxT-mGLoJZJt1RISSSlXVE5_mzjQAt2QzIC5Q",
-    "https://s.isanook.com/ca/0/ud/276/1380909/12794445_1218908274799864_3867112738991391881_n.jpg"
+    "https://upload.wikimedia.org/wikipedia/commons/3/32/French_Bulldog_with_Black_Mask.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/6/6e/EnglishBulldog.jpg"
 ]
 
-st.title("คลิกเลือกรูปภาพเพื่อดูขนาดเต็ม")
+# Slider ให้เลือกขนาดรูปย่อ (thumbnail)
+thumb_size = st.slider("ปรับขนาดรูปย่อ (px)", min_value=50, max_value=400, value=200, step=10)
 
-# โหลดภาพทั้งหมดจาก URL และปรับขนาดให้เท่ากัน (เช่น 200x200 px)
+# โหลดและย่อภาพตามขนาดที่เลือก
 def load_and_resize(url, size=(200, 200)):
     response = requests.get(url)
     if response.status_code == 200:
         img = Image.open(BytesIO(response.content))
-        img = img.convert("RGB")  # ป้องกันปัญหาบางภาพ
+        img = img.convert("RGB")
         img = img.resize(size)
         return img
     else:
         return None
 
-images = [load_and_resize(url) for url in image_urls]
+# โหลดภาพย่อตามขนาด slider
+images = [load_and_resize(url, (thumb_size, thumb_size)) for url in image_urls]
 
-# แสดงภาพใน 3 คอลัมน์
 cols = st.columns(3)
 selected_index = None
 
@@ -35,11 +38,8 @@ for i, col in enumerate(cols):
             selected_index = i
         col.image(images[i], use_container_width=True)
 
-# แสดงภาพขนาดเต็มเมื่อเลือก
 if selected_index is not None:
     st.subheader(f"ภาพที่ {selected_index + 1} (ขนาดเต็ม)")
-    
-    # โหลดภาพขนาดเต็ม (ไม่ย่อ)
     response = requests.get(image_urls[selected_index])
     if response.status_code == 200:
         full_img = Image.open(BytesIO(response.content))
