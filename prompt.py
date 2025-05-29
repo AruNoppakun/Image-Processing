@@ -22,15 +22,11 @@ if "selected_image" not in st.session_state:
 # แสดงภาพย่อพร้อมปุ่มเลือก
 for i, (caption, url) in enumerate(image_dict.items()):
     with cols[i]:
-        # โหลดภาพและปรับขนาด
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
         img = img.resize(target_size)
-
-        # แสดงภาพและ caption
         st.image(img, caption=caption, use_container_width=True)
 
-        # ปุ่มเลือกภาพ
         if st.button("เลือกรูปภาพ", key=f"select_{i}"):
             st.session_state.selected_image = (caption, url)
 
@@ -40,5 +36,13 @@ if st.session_state.selected_image is not None:
     response = requests.get(url)
     img_full = Image.open(BytesIO(response.content))
 
+    # เพิ่ม slider ให้ปรับความกว้างภาพเต็ม (px)
+    width = st.slider("ปรับความกว้างภาพเต็ม (pixel)", min_value=100, max_value=1200, value=600)
+
+    # ปรับขนาดภาพให้กว้างตาม slider รักษาอัตราส่วน
+    aspect_ratio = img_full.height / img_full.width
+    new_height = int(width * aspect_ratio)
+    img_full_resized = img_full.resize((width, new_height))
+
     st.markdown("---")
-    st.image(img_full, caption=f"ภาพเต็ม: {caption}", use_container_width=True)
+    st.image(img_full_resized, caption=f"ภาพเต็ม: {caption}", use_container_width=False)
