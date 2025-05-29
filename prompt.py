@@ -15,25 +15,30 @@ st.title("แสดงภาพสัตว์สามชนิด")
 cols = st.columns(3)
 target_size = (300, 300)
 
-# ตัวแปรเก็บภาพที่เลือก (ใช้ session_state)
+# กำหนดค่าเริ่มต้น session_state สำหรับเก็บภาพที่เลือก
 if "selected_image" not in st.session_state:
     st.session_state.selected_image = None
 
-# แสดงภาพย่อพร้อมปุ่ม
+# แสดงภาพย่อพร้อมปุ่มเลือก
 for i, (caption, url) in enumerate(image_dict.items()):
     with cols[i]:
+        # โหลดภาพและปรับขนาด
         response = requests.get(url)
         img = Image.open(BytesIO(response.content))
         img = img.resize(target_size)
+
+        # แสดงภาพและ caption
         st.image(img, caption=caption, use_container_width=True)
 
+        # ปุ่มเลือกภาพ
         if st.button("เลือกรูปภาพ", key=f"select_{i}"):
             st.session_state.selected_image = (caption, url)
 
-# ถ้ามีภาพที่เลือก ให้แสดงภาพเต็มขนาดด้านล่าง
+# แสดงภาพขนาดเต็มถ้ามีการเลือกภาพ
 if st.session_state.selected_image is not None:
     caption, url = st.session_state.selected_image
     response = requests.get(url)
     img_full = Image.open(BytesIO(response.content))
+
     st.markdown("---")
     st.image(img_full, caption=f"ภาพเต็ม: {caption}", use_container_width=True)
