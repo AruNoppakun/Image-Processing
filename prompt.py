@@ -10,8 +10,8 @@ st.title("แสดงภาพพร้อมแกน X, Y ด้วย matplo
 # URLs ของภาพทั้ง 3
 image_urls = [
     "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bulldog_inglese.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/3/32/French_Bulldog_with_Black_Mask.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/6/6e/EnglishBulldog.jpg"
+    "https://images.dmc.tv/wallpaper/raw/7480.jpg",
+    "https://waymagazine.org/wp-content/uploads/2019/05/dog.jpg"
 ]
 
 # โหลดภาพเต็มไว้ก่อน
@@ -56,13 +56,18 @@ if selected_index is not None:
     img_np = np.array(resized_img)
 
     # แสดงภาพด้วย matplotlib พร้อมแกน X, Y
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(new_size[0]/100, new_size[1]/100), dpi=100)
     ax.imshow(img_np)
     ax.set_xlabel("X (pixel)")
     ax.set_ylabel("Y (pixel)")
     ax.set_title("ภาพปรับขนาดพร้อมแกน X, Y")
-    ax.set_xticks(np.linspace(0, new_size[0], num=5).astype(int))
-    ax.set_yticks(np.linspace(0, new_size[1], num=5).astype(int))
-    ax.invert_yaxis()  # ให้แกน y เริ่มที่บน (เหมือนภาพปกติ)
+
+    # กำหนดขอบเขตแกนให้ตรงกับขนาดภาพ
+    ax.set_xlim(0, new_size[0])
+    ax.set_ylim(new_size[1], 0)  # ปรับให้แกน Y เริ่มต้นที่บนสุดของภาพ
+
+    # ตั้ง tick ให้เหมาะสม (5 ตำแหน่ง)
+    ax.set_xticks(np.linspace(0, new_size[0], 5).astype(int))
+    ax.set_yticks(np.linspace(0, new_size[1], 5).astype(int))
 
     st.pyplot(fig)
