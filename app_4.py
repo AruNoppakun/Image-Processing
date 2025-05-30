@@ -10,6 +10,7 @@ from PIL import ImageEnhance
 import matplotlib.cm as cm
 import requests
 from io import BytesIO
+from skimage.transform import resize
 
 # Load model
 model = MobileNetV2(weights="imagenet")
