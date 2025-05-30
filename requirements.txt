@@ -1,13 +1,14 @@
-torch>=1.13
-torchvision==0.15.2
-torchaudio
-transformers==4.36.2
-ultralytics
-opencv-python-headless>=4.5
-matplotlib
-plotly
-streamlit==1.44.0
-pillow>=9.0.0
 scikit-image>=0.19.3
+matplotlib
 requests
-tensorflow==2.15.0
+plotly
+torchaudio
+ultralytics
+opencv-python-headless
+streamlit==1.44.0
+#transformers @ git+https://github.com/huggingface/transformers
+torch>=1.13
+torchvision==0.21.0
+pillow==11.1.0
+transformers==4.36.2
+tensorflow
