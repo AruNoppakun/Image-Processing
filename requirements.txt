@@ -1,7 +1,6 @@
 torch>=1.13
 torchvision==0.15.2
 torchaudio
-tensorflow==2.15.0
 transformers==4.36.2
 ultralytics
 opencv-python-headless>=4.5
@@ -11,3 +10,4 @@ streamlit==1.44.0
 pillow>=9.0.0
 scikit-image>=0.19.3
 requests
+tensorflow==2.15.0
